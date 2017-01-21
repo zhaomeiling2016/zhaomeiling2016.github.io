@@ -1,49 +1,57 @@
-extends base
-
-block title
-  title= page.title + ' | ' + config.title
-
-block content
-  .post
-    h1.post-title= page.title
-    .post-meta= page.date.format('ll')
-      if page.categories.length > 0
-        span= ' | '
-        span.category
-          for category in page.categories.toArray()
-            a(href=url_for(category.path))= category.name
-      if theme.busuanzi == true
-        script(src='https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js', async)
-        span#busuanzi_container_page_pv= ' | '
-          span#busuanzi_value_page_pv
-          span= ' ' + __('Hits')
-    if theme.duoshuo
-      a.ds-thread-count(data-thread-key=page.path, href=url_for(page.path) + '#comments')
-    if theme.disqus
-      a.disqus-comment-count(data-disqus-identifier=page.path, href=url_for(page.path) + '#disqus_thread')
-    if page.toc
-      div(class='clear')
-        div(id='toc' class='toc-article')
-          div(class='toc-title')= __('contents')
-          != toc(page.content)
-    .post-content
-      != page.content
-    include _partial/tag
-    include _partial/post_nav
-    if theme.duoshuo
-      div(class='ds-share flat' data-thread-key=page.path, data-title=page.title, data-url=page.permalink)
-         .ds-share-inline
-            ul.ds-share-icons-16
-              li(data-toggle='ds-share-icons-more')
-                a(href='javascript:void(0);').ds-more= __('shareto')
-                  | :
-              li
-                a(href='javascript:void(0);' data-service='weibo').ds-weibo 微博
-              li
-                a(href='javascript:void(0);' data-service='qzone').ds-qzone QQ空间
-              li
-                a(href='javascript:void(0);' data-service='qqt').ds-qqt 腾讯微博
-              li
-                a(href='javascript:void(0);' data-service='wechat').ds-wechat 微信
-            .ds-share-icons-more
-    include _partial/comments
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="记录了整了个技术站"><title>学习笔记 | 赵美玲的博客</title><link rel="stylesheet" type="text/css" href="//fonts.css.network/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.2.0"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=1.2.0"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">学习笔记</h1><a id="logo" href="/.">赵美玲的博客</a><p class="description">技术博客</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">学习笔记</h1><div class="post-meta">Jan 19, 2017<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><h3 id="第二天预解释"><a href="#第二天预解释" class="headerlink" title="第二天预解释"></a>第二天预解释</h3><h4 id="为何学习预解释："><a href="#为何学习预解释：" class="headerlink" title="为何学习预解释："></a>为何学习预解释：</h4><ol>
+<li>报错的时候，为何会报错？</li>
+<li>带var和不带var的区别？</li>
+<li>代码应该写在什么地方？</li>
+<li>当代码不一样的时候，弹出同样的i，结果却不同？<h4 id="预解释"><a href="#预解释" class="headerlink" title="预解释"></a>预解释</h4></li>
+</ol>
+<ul>
+<li>概念：在当前作用域下，在JS代码执行之前，浏览器会对带var和带function的进行声明或定义；</li>
+<li>带var的：只声明不定义； var abc;</li>
+<li>带function的：声明加定义；var abc=xxff00;<h4 id="关于函数"><a href="#关于函数" class="headerlink" title="关于函数"></a>关于函数</h4></li>
+<li>函数定义三阶段：<ol>
+<li>开辟一个空间地址</li>
+<li>把函数体中的所有JS代码作为字符串放在这个空间中</li>
+<li>把空间地址赋值给函数名</li>
+</ol>
+</li>
+<li><p>函数执行四阶段：</p>
+<ol>
+<li>形成一个私有作用域</li>
+<li>形参赋值</li>
+<li>预解释：</li>
+<li>代码从上到下的执行；<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var n=123;</div><div class="line">function fn()&#123;</div><div class="line">    alert(n)</div><div class="line">    n=456;</div><div class="line">    alert(n)</div><div class="line">&#125;</div><div class="line">fn(4);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>以上题涉及到的新知识点：</p>
+<ol>
+<li>作用域链：当函数被调用的时候，形成一个私有作用域；我们找私有变量n；<br>如果有私有变量n，那么整个函数中的n都是该函数的私有变量，跟外界没有任何关系；<br>如果没有私有变量n，就到该函数的上级作用域进行查找，找不到，继续往上找，一直找到window，还没有的话：报错！</li>
+<li>带var 和不带var 的区别:<ul>
+<li>带var会进行预解释；在全局作用域下，他也是window的全局属性；</li>
+<li>不带var不会进行预解释；如果进行赋值的话，就是给window进行全局属性的赋值；window.xxx=xx;</li>
+</ul>
+</li>
+<li>私有变量有2种:1)形参 2）函数中带var的；</li>
+<li>上级作用域：跟函数在哪里调用无关；只跟函数对应的堆内存在哪里开辟有关；<h4 id="内存和内存释放"><a href="#内存和内存释放" class="headerlink" title="内存和内存释放"></a>内存和内存释放</h4></li>
+</ol>
+</li>
+<li>栈内存：形成一个供JS代码执行的环境：1）全局作用域 2）私有作用域<ul>
+<li>全局作用域：当浏览器加载完页面的时候，全局作用域就形成了<ul>
+<li>销毁：关闭页面</li>
+</ul>
+</li>
+<li>私有作用域：一般当函数执行完成的时候，自己就销毁，有两种情况不销毁：<ul>
+<li>不销毁：当函数里面的东西，被外面的变量或其他东西占用的时候，就不会销毁了</li>
+<li>不立即销毁：当函数执行完成的时候，会返回一个函数，这个函数执行完成，所有的函数才能销毁；fn()();</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>堆内存：他用来存放数据的；<ul>
+<li>对象数据类型：存的是键值对</li>
+<li>函数数据类型：存的是代码字符串；</li>
+<li>堆内存的销毁：var obj={}  var fn=xxxff00; 销毁方式=》obj=null; fn=null;</li>
+</ul>
+</li>
+</ul>
+</div><div class="tags"></div><div class="post-nav"><a href="/2017/01/19/用hexo-github搭建一个博客/" class="next">用hexo+github搭建一个博客</a></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="widget"><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="请输入关键字..."/></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/前端/javascript/">javascript</a><span class="category-list-count">1</span></li></ul></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/后端/" style="font-size: 15px;">后端</a> <a href="/tags/文章/" style="font-size: 15px;">文章</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-fei"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/学习笔记/">学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/用hexo-github搭建一个博客/">用hexo+github搭建一个博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/hello-world/">Hello World</a></li></ul></div></div></div></div><a id="totop" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.2.0" async></script><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">网站地图</a> |<a href="/atom.xml">订阅本站</a> |<span>联系博主：<a href="mailto:null" target="_blank" class="fa fa-email"> </a><a href="null" target="_blank" class="fa fa-weibo"></a><a href="null" target="_blank" class="fa fa-github"> </a></span></p><p><span> Copyright &copy;<a href="/." rel="nofollow">赵美玲</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span><span><a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> Theme </a>by<a rel="nofollow" target="_blank" href="https://github.com/chaooo"> Charles.</a></span></p></div></div></div><script type="text/javascript" src="/js/search.json.js?v=1.2.0"></script></body></html>
